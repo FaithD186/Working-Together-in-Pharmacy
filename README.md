@@ -10,5 +10,5 @@ Technology Stack
 - Blender: 3D modeling and animation for visual elements
 - Davinci Resolve: Video editing for 3D animation
 
-The modules can be accessed here: [Working Together in the Pharmacy](https://pharmacy-modules.itch.io/working-together-in-the-pharmacy)
+👉 The modules can be accessed here: [Working Together in the Pharmacy](https://pharmacy-modules.itch.io/working-together-in-the-pharmacy)
 
