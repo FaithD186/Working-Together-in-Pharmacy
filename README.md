@@ -1,6 +1,6 @@
 # Working together in the pharmacy
 
-## Promoting Practice Readiness to Full Scope
+#### Promoting Practice Readiness to Full Scope
 These interactive virtual case-based scenarios were designed to simulate real-world pharmacy practice. Developed with a focus on intra-professional role understanding and collaborative practice, these modules aim to help secondary and post-secondary students gain a better understanding of the roles and responsibilities of pharmacy technicians and pharmacists. 
 
 Technology Stack
