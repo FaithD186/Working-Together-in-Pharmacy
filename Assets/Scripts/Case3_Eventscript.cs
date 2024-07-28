@@ -5,9 +5,18 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
 
+/*
+
+This script controls the presentation of text-based elements and UI screens within Scenario 3. 
+
+Determines the flow of content post-video (e.g. display of quiz, "Did You Know" section, 
+card screens, etc.)
+
+*/
+
 public class Case3_Eventscript : MonoBehaviour
 {
-    // Panel GameObjects (i.e. different "screens")
+    // Panel GameObjects
     public GameObject PatientProfile;
     public GameObject EndPanel;
     public GameObject FactPanel;
@@ -16,6 +25,13 @@ public class Case3_Eventscript : MonoBehaviour
     public GameObject Reflection;
     public GameObject MenuButton;
     public GameObject MenuPanel;
+
+    // Game screens
+    public GameObject Card1;
+    public GameObject Card2;
+    public GameObject Canvas;
+    public GameObject ComputerScreen;
+    public GameObject ComputerScreen2;
 
     // Video player control GameObjects
     public GameObject SkipButton;
@@ -26,7 +42,7 @@ public class Case3_Eventscript : MonoBehaviour
     // Variable Trackers
     public int currentVideoIndex = 0;
 
-    // Popups in scenario 
+    // Question panels
     public GameObject QuestionPanel_Scenario; 
     public GameObject CorrectPanel_Scenario;
     public GameObject IncorrectPanel_Scenario;
@@ -39,15 +55,6 @@ public class Case3_Eventscript : MonoBehaviour
     public GameObject SpeedButton;
     public GameObject SpeedButtonPressed;
 
-    public GameObject ContinueinScene;
-
-    // Screens
-    public GameObject Canvas;
-    public GameObject ComputerScreen;
-    public GameObject ComputerScreen2;
-    // public GameObject ConsentForm;
-    // public GameObject ConsentForm2;
-
     // Refers to quizzes within scenarios
     private int currentQuizNum = 0;
     private string playerChoice;
@@ -58,14 +65,17 @@ public class Case3_Eventscript : MonoBehaviour
     public TextMeshProUGUI Choice3Text;
     public string[] QuizCorrectAnswers;
 
+    // Canvas elements
     private SequenceStarterScript sequenceStarter;
     private VideoController videoController;
-    
-    public GameObject Card1;
-    public GameObject Card2;
+    public GameObject ContinueinScene;
 
+    
     void Start()
-    {   PatientProfile.SetActive(true);
+    {   
+        // Setting up screen displays 
+        PatientProfile.SetActive(true);
+        QuestionPanel_Scenario.SetActive(false);
         FactPanel.SetActive(false);
         FactPanel2.SetActive(false);
         Reflection.SetActive(false);
@@ -73,32 +83,29 @@ public class Case3_Eventscript : MonoBehaviour
         Card.SetActive(false);
         ComputerScreen.SetActive(false);
         ComputerScreen2.SetActive(false);
-        // ConsentForm.SetActive(false);
-        // ConsentForm2.SetActive(false);
 
+        // Setting up card screens
         Card1.SetActive(true);
         Card2.SetActive(false);
 
-        ContinueinScene.SetActive(false);
-
-
+        // Setting up UI game elements
         SkipButton.SetActive(false);
         SpeedButton.SetActive(false);
         SpeedButtonPressed.SetActive(false);
         PauseButton.SetActive(false);
         PlayButton.SetActive(false);
+        ContinueinScene.SetActive(false);
 
-        QuestionPanel_Scenario.SetActive(false);
-
+        // Retrieving canvas elements
         sequenceStarter = Canvas.GetComponent<SequenceStarterScript>();
         videoController = Canvas.GetComponent<VideoController>();    
     }
 
     public void StartVideo()
     {
-        Debug.Log("Current video index is" + currentVideoIndex);
         PatientProfile.SetActive(false);
 
+        // Turn on Video control UI components
         MenuButton.SetActive(true);
         SkipButton.SetActive(true);
         SpeedButton.SetActive(true);
@@ -117,6 +124,7 @@ public class Case3_Eventscript : MonoBehaviour
         SpeedButtonPressed.SetActive(false);
         PauseButton.SetActive(false);
         PlayButton.SetActive(false);
+
         if (currentVideoIndex == 0 || currentVideoIndex == 1 || currentVideoIndex == 7){
             sequenceStarter.StartSeq();
             videoController.ContinueClicked();
@@ -141,7 +149,7 @@ public class Case3_Eventscript : MonoBehaviour
             return;
         }
     
-        //if video out of bounds
+        // If video out of bounds
         else{
             return;
         }
@@ -162,8 +170,6 @@ public class Case3_Eventscript : MonoBehaviour
     }
 
     public void CheckQuizAnswer(){
-        Debug.Log("currentQuizNum" + currentQuizNum);
-        Debug.Log("Correct answer" + CorrectAnswers[currentQuizNum]);
         if (PlayerAnswer != CorrectAnswers[currentQuizNum]){
             IncorrectPanel_Scenario.SetActive(true);
         }else{
@@ -184,11 +190,6 @@ public class Case3_Eventscript : MonoBehaviour
         PauseButton.SetActive(true);
         currentVideoIndex++;
     }
-    
-    // public void NextPageForm(){
-    //     ConsentForm.SetActive(false);
-    //     ConsentForm2.SetActive(true);
-    // }
 
     public void ShowCard2(){
         Card1.SetActive(false);
@@ -204,9 +205,9 @@ public class Case3_Eventscript : MonoBehaviour
             ComputerScreen.SetActive(false);
             ComputerScreen2.SetActive(false);
             FactPanel2.SetActive(false);
-            // ConsentForm2.SetActive(false);
             Card.SetActive(false);
 
+            // Turn off question panels
             QuestionPanel_Scenario.SetActive(false);
             CorrectPanel_Scenario.SetActive(false);
             IncorrectPanel_Scenario.SetActive(false);
@@ -228,6 +229,8 @@ public class Case3_Eventscript : MonoBehaviour
         QuestionPanel_Scenario.SetActive(true);
         IncorrectPanel_Scenario.SetActive(false);
         CorrectPanel_Scenario.SetActive(false);
+
+        // Set up text elements
         QuizQuestionText.text = GetQuizQuestionText(currentQuizNum);
         QuizExplanationText.text = GetQuizExplanationText(currentQuizNum);
         Choice1Text.text = GetChoice1Text(currentQuizNum);
@@ -239,10 +242,6 @@ public class Case3_Eventscript : MonoBehaviour
     public void ShowEndPanel(){
         EndPanel.SetActive(true);
     }
-
-    // public void Show_ConsentForm(){
-    //     ConsentForm.SetActive(true);
-    // }
 
     public void Show_ComputerScreen2(){
         ContinueinScene.SetActive(false);
@@ -282,7 +281,8 @@ public class Case3_Eventscript : MonoBehaviour
     }
 
     public string GetChoice1Text(int index){
-        string[] Choice1Texts = {"Complete an approved injection training course.", 
+        string[] Choice1Texts = {
+        "Complete an approved injection training course.", 
         "Inspect the vial for cracks, leaks and particulate matter.", 
         "Listen to music and dance in her seat to distract herself while the pharmacist is injecting the vaccine.", 
         "Swabbing the injection site with alcohol",
@@ -293,7 +293,8 @@ public class Case3_Eventscript : MonoBehaviour
             return "";
     }
     public string GetChoice2Text(int index){
-        string[] Choice2Texts = {"Discuss vaccine benefits and risks with the patient.", 
+        string[] Choice2Texts = {
+        "Discuss vaccine benefits and risks with the patient.", 
         "Shake the vial prior to withdrawing the dose.", 
         "Grab the milk chocolate covered almonds from her bag and have some before and after the injection for some comfort.", 
         "Landmarking of injection site",
@@ -304,7 +305,8 @@ public class Case3_Eventscript : MonoBehaviour
             return "";
     }
     public string GetChoice3Text(int index){
-        string[] Choice3Texts = {"Obtain informed consent from the patient.", 
+        string[] Choice3Texts = {
+        "Obtain informed consent from the patient.", 
         "Disinfect the entry point/rubber stopper and allow it to dry.", 
         "Take slow deep breaths in and out to help her relax while the pharmacist is injecting the vaccine.", 
         "Massaging the injection site following administration",
@@ -314,6 +316,8 @@ public class Case3_Eventscript : MonoBehaviour
         else
             return "";
     }
+
+    // Video control UI elements
 
     public void SkipVideo(){
         Videos[currentVideoIndex].Stop();

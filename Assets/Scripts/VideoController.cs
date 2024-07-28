@@ -24,14 +24,10 @@ public class VideoController : MonoBehaviour
     public GameObject SpeedButton;
     public GameObject SpeedButtonPressed;
 
-
     public GameObject FactPanel;
     public GameObject MenuPanel;
-    // public GameObject MultipleQuestionPanel; // Question with multiple choices
-    // public GameObject TrueFalseQuestionPanel;
     public GameObject QuestionPanel_Scenario; 
     public GameObject PatientProfile;
-    // public GameObject KnowledgeCheck;
 
     public GameObject ComputerScreen;
     public GameObject ComputerScreen2;
@@ -62,9 +58,12 @@ public class VideoController : MonoBehaviour
         || QuestionPanel_Scenario.activeSelf || ComputerScreen.activeSelf 
         || ComputerScreen2.activeSelf || Prescription.activeSelf || TrueFalsePanel.activeSelf || Reflection.activeSelf
         || ConsentForm2.activeSelf || FactPanel2.activeSelf || Card.activeSelf){ 
+            
             MenuPanel.SetActive(false);
+
         }
         else{
+            // If menu is accessed during video playback
             MenuPanel.SetActive(false);
             Time.timeScale = 1;
             Videos[currentVideoIndex].Play();
@@ -99,24 +98,26 @@ public class VideoController : MonoBehaviour
         }else{
             SpeedButtonPressed.SetActive(true);
         }
-        // SpeedButton.SetActive(true); // if speedbutttonpressed is set active, then that should be active
         PlayButton.SetActive(false);
     }
     public void ContinueClicked(){
         currentVideoIndex++;
     }
     public void ReplayScene(){
+        // Set up game UI elements
         SkipButton.SetActive(true);
         SpeedButton.SetActive(true);
         PauseButton.SetActive(true);
         PlayButton.SetActive(false);
+
+        // Play video from the beginning
         Videos[currentVideoIndex].time = 0;
         Videos[currentVideoIndex].Play();
+
+        // Manage screen displays
         FactPanel.SetActive(false);
         Card.SetActive(false);
         FactPanel2.SetActive(false);
-        // KnowledgeCheck.SetActive(false);
-
         QuestionPanel_Scenario.SetActive(false);
         ComputerScreen.SetActive(false);
         ComputerScreen2.SetActive(false);

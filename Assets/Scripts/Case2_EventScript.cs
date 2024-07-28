@@ -5,14 +5,22 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using TMPro;
 
+/*
+
+This script controls the presentation of text-based elements and UI screens within Scenario 2. 
+
+Determines the flow of content post-video (e.g. display of quiz, "Did You Know" section, 
+computer screens, prescription screens, etc.)
+
+*/
+
 public class Case2_EventScript : MonoBehaviour
 {
-    // Panel GameObjects (i.e. different "screens")
+    // Panel GameObjects 
     public GameObject PatientProfile;
     public GameObject EndPanel;
     public GameObject FactPanel;
     public GameObject Reflection;
-
     public GameObject MenuButton;
     public GameObject MenuPanel;
 
@@ -60,44 +68,43 @@ public class Case2_EventScript : MonoBehaviour
     public TextMeshProUGUI Choice2Text;
     public TextMeshProUGUI Choice3Text;
     public string[] QuizCorrectAnswers;
-
-
     private string playerChoice;
 
-
+    // Canvas elements
     private SequenceStarterScript sequenceStarter;
     private VideoController videoController;
-
-    //private int currentFactNum = 0;
     
 
     void Start()
-    {   PatientProfile.SetActive(true);
+    {   
+        // Setting up screen displays
+        PatientProfile.SetActive(true);
         FactPanel.SetActive(false);
         Reflection.SetActive(false);
         EndPanel.SetActive(false);
         ComputerScreen.SetActive(false);
         ComputerScreen2.SetActive(false);
         Prescription.SetActive(false);
+        QuestionPanel_Scenario.SetActive(false);
+        TrueFalsePanel.SetActive(false);
 
+        // Setting up UI elements
         SkipButton.SetActive(false);
         SpeedButton.SetActive(false);
         SpeedButtonPressed.SetActive(false);
         PauseButton.SetActive(false);
         PlayButton.SetActive(false);
 
-        QuestionPanel_Scenario.SetActive(false);
-        TrueFalsePanel.SetActive(false);
-
+        // Retrieving canvas elements
         sequenceStarter = Canvas.GetComponent<SequenceStarterScript>();
         videoController = Canvas.GetComponent<VideoController>();    
     }
 
     public void StartVideo()
     {
-        Debug.Log("Current video index is" + currentVideoIndex);
         PatientProfile.SetActive(false);
 
+        // Turn on Video control UI components
         MenuButton.SetActive(true);
         SkipButton.SetActive(true);
         SpeedButton.SetActive(true);
@@ -112,6 +119,7 @@ public class Case2_EventScript : MonoBehaviour
         SpeedButtonPressed.SetActive(false);
         PauseButton.SetActive(false);
         PlayButton.SetActive(false);
+
         if (currentVideoIndex == 0){
             ComputerScreen.SetActive(true);
             return;
@@ -141,9 +149,7 @@ public class Case2_EventScript : MonoBehaviour
             return;
         }
 
-        // currentVideoIndex == 6: "What if" panel
-    
-        //if video out of bounds
+        // If video out of bounds
         else{
             return;
         }
@@ -164,8 +170,6 @@ public class Case2_EventScript : MonoBehaviour
     }
 
     public void CheckQuizAnswer(){
-        Debug.Log("currentQuizNum" + currentQuizNum);
-        Debug.Log("Correct answer" + CorrectAnswers[currentQuizNum]);
         if (PlayerAnswer != CorrectAnswers[currentQuizNum]){
             IncorrectPanel_Scenario.SetActive(true);
         }else{
@@ -191,7 +195,6 @@ public class Case2_EventScript : MonoBehaviour
         PauseButton.SetActive(true);
         currentVideoIndex++;
     }
-    
 
     public void ContinueClicked(){ // Continue in Fact Panel
             FactPanel.SetActive(false);
@@ -205,7 +208,6 @@ public class Case2_EventScript : MonoBehaviour
             TrueFalsePanel.SetActive(false);
             TrueFalse_CorrectPanel.SetActive(false);
             TrueFalse_IncorrectPanel.SetActive(false);
-
 
             SkipButton.SetActive(true);
             SpeedButton.SetActive(true);
@@ -222,6 +224,8 @@ public class Case2_EventScript : MonoBehaviour
         IncorrectPanel_Scenario.SetActive(false);
         CorrectPanel_Scenario.SetActive(false);
         SubmitButton.SetActive(false);
+
+        // Set up text elements
         QuizQuestionText.text = GetQuizQuestionText(currentQuizNum);
         QuizExplanationText.text = GetQuizExplanationText(currentQuizNum);
         Choice1Text.text = GetChoice1Text(currentQuizNum);
@@ -303,7 +307,8 @@ public class Case2_EventScript : MonoBehaviour
     }
 
     public string GetChoice1Text(int index){
-        string[] Choice1Texts = {"He selects an over the counter (OTC) product for Bob to treat his cold symptoms.", 
+        string[] Choice1Texts = {
+        "He selects an over the counter (OTC) product for Bob to treat his cold symptoms.", 
         "Dose", 
         "The RPhT should have said nothing and discarded the cup and its contents.", 
         "Identify and keep a record of pharmacy staff who have made errors."};
@@ -313,7 +318,8 @@ public class Case2_EventScript : MonoBehaviour
             return "";
     }
     public string GetChoice2Text(int index){
-        string[] Choice2Texts = {"He asks the pharmacist to assess Bob and make a recommendation.", 
+        string[] Choice2Texts = {
+        "He asks the pharmacist to assess Bob and make a recommendation.", 
         "Therapeutic equivalent", 
         "The RPhT should have asked the pharmacy manager to speak to the relief pharmacist about leaving a coffee cup in the compounding area.", 
         "Share information and create action plans to improve medication safety."};
@@ -323,7 +329,8 @@ public class Case2_EventScript : MonoBehaviour
             return "";
     }
     public string GetChoice3Text(int index){
-        string[] Choice3Texts = {"He collects more information and then asks the pharmacist to assess Bob and make a recommendation.", 
+        string[] Choice3Texts = {
+        "He collects more information and then asks the pharmacist to assess Bob and make a recommendation.", 
         "Route of administration", 
         "The RPhT did a good job informing the relief pharmacist that no food or drink is allowed in the compounding area.", 
         "Ensure there is pharmacy documentation in case of future litigation by patients."};
@@ -335,7 +342,8 @@ public class Case2_EventScript : MonoBehaviour
 
     public string GetQuestionText(int index)
     {
-        string[] questionTexts = { "Reflecting on the scenario you just completed, please identify the effective patient-pharmacy professional interactions in the scenario. Select all that apply.", 
+        string[] questionTexts = {
+        "Reflecting on the scenario you just completed, please identify the effective patient-pharmacy professional interactions in the scenario. Select all that apply.", 
         "Which of the following tasks fall within the scope of both pharmacy technicians and pharmacists? Select all that apply.", 
         "What was effective in Sayed and Damilola's interactions? Select all that apply.", 
         "Registered Pharmacists (RPh) and Registered Pharmacy Technicians (RPhT) are bound to uphold the Ontario College of Pharmacists Code of Ethics."};
@@ -344,6 +352,8 @@ public class Case2_EventScript : MonoBehaviour
         else
             return "";
     }
+
+    // Video control UI elements
 
     public void SkipVideo(){
         Videos[currentVideoIndex].Stop();
